@@ -17,6 +17,7 @@ jobs:
       - name: Build debug APK
         run: |
           F=$(find . -name settings.gradle.kts | head -1)
+          if [ -z "$F" ] && [ -f GGGaming.zip ]; then unzip -q GGGaming.zip -d _proj; F=$(find _proj -name settings.gradle.kts | head -1); fi
           if [ -z "$F" ]; then echo "settings.gradle.kts nao encontrado. Arquivos no repo:"; ls -R | head -50; exit 1; fi
           cd "$(dirname "$F")"
           gradle assembleDebug --no-daemon
