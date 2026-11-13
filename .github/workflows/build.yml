@@ -20,6 +20,8 @@ jobs:
           if [ -z "$F" ] && [ -f GGGaming.zip ]; then unzip -q GGGaming.zip -d _proj; F=$(find _proj -name settings.gradle.kts | head -1); fi
           if [ -z "$F" ]; then echo "settings.gradle.kts nao encontrado. Arquivos no repo:"; ls -R | head -50; exit 1; fi
           cd "$(dirname "$F")"
+          M=app/src/main/java/com/gg/gaming/MainActivity.kt
+          grep -q "androidx.compose.ui.draw.clip" $M || sed -i 's/^import androidx.compose.ui.\*$/import androidx.compose.ui.*\nimport androidx.compose.ui.draw.clip/' $M
           gradle assembleDebug --no-daemon
           cp app/build/outputs/apk/debug/app-debug.apk "$GITHUB_WORKSPACE/GG_Gaming.apk"
       - uses: actions/upload-artifact@v4
